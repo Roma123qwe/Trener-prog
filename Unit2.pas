@@ -184,18 +184,24 @@ end;
 
 procedure TForm2.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 Var
-    WND: HWND;
-    lpCaption, lpText: PChar;
-    Tip: Integer;
+  WND: HWND;
+  lpCaption, lpText: PChar;
+  Tip: Integer;
 begin
-    WND := Form2.Handle;
-    lpCaption := 'Выход';
-    lpText := 'Вы уверены, что хотите выйти?';
-    Tip := MB_YESNO + MB_ICONINFORMATION + MB_DEFBUTTON2;
-    Case MessageBox(WND, lpText, lpCaption, Tip) Of
-        IDYES : CanClose := True;
-        IDNO : CanClose := False;
-    End
+  TimerGame.Enabled := False;
+  WND := Form2.Handle;
+  lpCaption := 'Выход';
+  lpText := 'Вы уверены, что хотите выйти?';
+  Tip := MB_YESNO + MB_ICONINFORMATION + MB_DEFBUTTON2;
+  Case MessageBox(WND, lpText, lpCaption, Tip) Of
+      IDYES :
+        CanClose := True;
+      IDNO :
+      Begin
+        CanClose := False;
+        TimerGame.Enabled := True;
+      End;
+  End
 end;
 
 procedure TForm2.GameRulesInfoClick(Sender: TObject);
@@ -275,6 +281,7 @@ begin
   Unit2.PhaseCounter := 1;
   Unit2.WordCounter := 1;
   TimerGame.Enabled := True;
+  ConfirmWord.Default := True;
   Unit2.Path := PATH_5;
 end;
 
