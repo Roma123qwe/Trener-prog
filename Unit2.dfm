@@ -14,6 +14,7 @@ object Form2: TForm2
   Menu = MainMenu
   OldCreateOrder = False
   Position = poDesktopCenter
+  OnCloseQuery = FormCloseQuery
   PixelsPerInch = 96
   TextHeight = 13
   object BackPanel: TPanel
@@ -39,8 +40,15 @@ object Form2: TForm2
     object ResultLabel: TLabel
       Left = 214
       Top = 208
-      Width = 3
-      Height = 13
+      Width = 5
+      Height = 19
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
     end
     object Task2Label: TLabel
       Left = 230
@@ -71,7 +79,7 @@ object Form2: TForm2
     end
     object ConfirmWord: TButton
       Left = 312
-      Top = 144
+      Top = 128
       Width = 105
       Height = 57
       Caption = #1055#1086#1076#1090#1074#1077#1088#1076#1080#1090#1100
@@ -82,7 +90,7 @@ object Form2: TForm2
     end
     object EnterWord: TEdit
       Left = 136
-      Top = 160
+      Top = 144
       Width = 145
       Height = 27
       Enabled = False
@@ -96,7 +104,6 @@ object Form2: TForm2
       TextHint = #1042#1074#1077#1076#1080#1090#1077' '#1089#1083#1086#1074#1086
       Visible = False
       OnChange = EnterWordChange
-      OnKeyPress = EnterWordKeyPress
     end
   end
   object StartNewGame: TButton
@@ -122,5 +129,11 @@ object Form2: TForm2
       ShortCut = 16466
       OnClick = GameRulesInfoClick
     end
+  end
+  object TimerGame: TTimer
+    Enabled = False
+    OnTimer = TimerGameTimer
+    Left = 64
+    Top = 32
   end
 end
