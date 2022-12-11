@@ -156,14 +156,20 @@ end;
 procedure TForm2.EnterWordChange(Sender: TObject);
 begin
   If(EnterWord.Text <> '') then
-    ConfirmWord.Enabled := True
+  Begin
+    ConfirmWord.Enabled := True;
+    EnterWord.Font.Color := clCaptionText;
+  End
   Else
+  Begin
     ConfirmWord.Enabled := False;
+    EnterWord.Font.Color := clGray;
+  End;
 end;
 
 procedure TForm2.EnterWordKeyPress(Sender: TObject; var Key: Char);
 Var
-  TempStr: String;
+  TempKey: String;
 begin
     If (Length(EnterWord.Text) < 1) And (Key = '-') Then
       Key := #0;
@@ -172,10 +178,9 @@ begin
       Key := #0;
     If (AnsiStr[1] In ['а'..'я']) Then
     Begin
-    // поменять нижний регистр на верхний
+      //
     End;
 end;
-
 
 procedure TForm2.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 Var
@@ -200,8 +205,11 @@ Const
   THIRD_MESSAGE = 'Задачей игрока является запоминать эти слова и вводить эти же слова,но в обратном порядке.' + #13#10;
   FOURTH_MESSAGE = 'Со временем игра начинает усложняться: слова становяться длинне.На их запоминание дается чуть больше времени.' + #13#10;
   FIFTH_MESSAGE = 'Игра заканчивается, если игрок правильно введет три перевернутых слова из 8 букв.' + #13#10;
+  SIXTH_MESSAGE = 'При вводе учитывайте регистр символов!';
+  SEVENTH_MESSAGE = 'Удачи и успехов!';
 begin
-  Application.MessageBox(FIRST_MESSAGE + SECOND_MESSAGE + THIRD_MESSAGE + FOURTH_MESSAGE + FIFTH_MESSAGE, 'Правила игры');
+  Application.MessageBox(FIRST_MESSAGE + SECOND_MESSAGE + THIRD_MESSAGE +
+  FOURTH_MESSAGE + FIFTH_MESSAGE + SIXTH_MESSAGE + SEVENTH_MESSAGE, 'Правила игры');
 end;
 
 procedure TForm2.StartNewGameClick(Sender: TObject);
