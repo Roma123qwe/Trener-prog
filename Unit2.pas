@@ -148,7 +148,7 @@ begin
   Delay(500);
   EnterWord.Text := '';
   ResultLabel.Caption := '';
-  ResultLabel.Left := ResultLabel.Left + 90;
+  ResultLabel.Left := 254;
 
   TimerGame.Enabled := True;
 end;
@@ -343,7 +343,11 @@ begin
     GameWordLabel.Caption := 'Вспомните слово и введите его наоборот в поле ниже';
   End;
 
-
+  if Unit2.PhaseCounter = 5 then
+  Begin
+    EnterWord.Enabled := False;
+    Application.MessageBox('Поздравляем с победой!Вы прошли первый этап.', 'Победа!');
+  End;
 end;
 
 end.
