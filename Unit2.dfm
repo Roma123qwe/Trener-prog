@@ -67,11 +67,11 @@ object Form2: TForm2
     object GameWordLabel: TLabel
       Left = 214
       Top = 99
-      Width = 10
-      Height = 22
+      Width = 7
+      Height = 15
       Font.Charset = RUSSIAN_CHARSET
       Font.Color = clWindowText
-      Font.Height = -19
+      Font.Height = -13
       Font.Name = 'Consolas'
       Font.Style = [fsBold]
       ParentFont = False
