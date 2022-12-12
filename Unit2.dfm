@@ -1,3 +1,4 @@
+
 object Form2: TForm2
   Left = 0
   Top = 0
@@ -151,3 +152,4 @@ object Form2: TForm2
     Top = 24
   end
 end
+
