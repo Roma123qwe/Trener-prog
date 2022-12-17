@@ -1,46 +1,85 @@
-unit Unit2;
-
+п»їunit Unit2;
 interface
-
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Menus;
-
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Menus,
+  Vcl.ComCtrls;
 type
   TForm2 = class(TForm)
-    BackPanel: TPanel;
-    Task1Label: TLabel;
-    ConfirmWord: TButton;
-    ResultLabel: TLabel;
-    Task2Label: TLabel;
-    EnterWord: TEdit;
-    GameWordLabel: TLabel;
-    StartNewGame: TButton;
     MainMenu: TMainMenu;
     GameRulesInfo: TMenuItem;
-    TimerGame: TTimer;
+    Phase1TimerGame: TTimer;
+    PageControl: TPageControl;
+    MenuPhase: TTabSheet;
+    FirstPhase: TTabSheet;
+    ThirdPhase: TTabSheet;
+    FourthPhase: TTabSheet;
+    FifthPhase: TTabSheet;
+    StartNewGame: TButton;
+    BackPanel: TPanel;
+    Task1Label: TLabel;
+    ResultLabel: TLabel;
+    Task2Label: TLabel;
+    GameWordLabel: TLabel;
+    ConfirmWord: TButton;
+    EnterWord: TEdit;
+    WelcomeLabel: TLabel;
+    GameInfoLabel: TLabel;
+    Requirement1Label: TLabel;
+    OpenFromFileDialog: TOpenDialog;
+    FileMenu: TMenuItem;
+    OpenFromFileMenu: TMenuItem;
+    Requirement2Label: TLabel;
+    SecondPhase: TTabSheet;
+    ThirdWordEdit: TEdit;
+    FirstWordEdit: TEdit;
+    SecondWordEdit: TEdit;
+    Edit4: TEdit;
+    FourthWordEdit: TEdit;
+    FifthWordEdit: TEdit;
+    SixthWord: TEdit;
+    SeventhWord: TEdit;
+    InputButton: TButton;
+    MemoOfWords: TMemo;
+    NextButton: TButton;
+    SecondPhaseTimer: TTimer;
+    BeginningLabel: TLabel;
+    ReadyLabel: TLabel;
     procedure StartNewGameClick(Sender: TObject);
     procedure EnterWordKeyPress(Sender: TObject; var Key: Char);
     procedure EnterWordChange(Sender: TObject);
     procedure ConfirmWordClick(Sender: TObject);
     procedure GameRulesInfoClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure TimerGameTimer(Sender: TObject);
+    procedure Phase1TimerGameTimer(Sender: TObject);
+    procedure OpenFromFileMenuClick(Sender: TObject);
+    procedure NextButtonClick(Sender: TObject);
+    procedure FirstWordEditChange(Sender: TObject);
+    procedure SecondWordEditChange(Sender: TObject);
+    procedure ThirdWordEditChange(Sender: TObject);
+    procedure FourthWordEditChange(Sender: TObject);
+    procedure FifthWordEditChange(Sender: TObject);
+    procedure SecondWordEditKeyPress(Sender: TObject; var Key: Char);
+    procedure ThirdWordEditKeyPress(Sender: TObject; var Key: Char);
+    procedure SixthWordKeyPress(Sender: TObject; var Key: Char);
+    procedure SeventhWordKeyPress(Sender: TObject; var Key: Char);
+    procedure FirstWordEditKeyPress(Sender: TObject; var Key: Char);
+    procedure FourthWordEditKeyPress(Sender: TObject; var Key: Char);
+    procedure FifthWordEditKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit4KeyPress(Sender: TObject; var Key: Char);
+    procedure InputButtonClick(Sender: TObject);
   private
   protected
   public
   end;
-
 var
   Form2: TForm2;
   PhaseCounter, WordCounter: Integer;
-  AnsiStr: String;
-  Path: String;
+  GameWord: String;
+  Path, Path_5, Path_6, Path_7, Path_8: String;
 
 implementation
-
 {$R *.dfm}
-
 procedure Delay(Value: Cardinal);
 var
   F, N: Cardinal;
@@ -58,17 +97,16 @@ begin
     N := GetTickCount;
   until (N - F >= (Value mod 10)) or (N < F);
 end;
-
 Function GetGameWordFromFile(Path: String): String;
 Var
    InputFile: TextFile;
    Word: String;
    IsCorrect: Boolean;
-   I: Integer;
+   List: TStringList;
+   I, N: Integer;
 Begin
     IsCorrect := True;
     AssignFile(InputFile,Path);
-
     If (IsCorrect) Then
     Begin
       Try
@@ -76,41 +114,40 @@ Begin
           Reset(InputFile);
           for I := 0 to Unit2.WordCounter - 1 do
           Begin
-            Readln(InputFile, Word);
+            Randomize;
+            List := TStringList.Create;
+            List.LoadFromFile(Path);
+            N := random(List.Count);
+            Word := List.Strings[N];
             Word := UTF8ToAnsi(Word);
           End;
         Finally
           CloseFile(InputFile);
         End;
       Except
-        Application.MessageBox('Ошибка при чтении данных из файла игры!', 'Ошибка' , MB_ICONERROR);
+        Application.MessageBox('ГЋГёГЁГЎГЄГ  ГЇГ°ГЁ Г·ГІГҐГ­ГЁГЁ Г¤Г Г­Г­Г»Гµ ГЁГ§ ГґГ Г©Г«Г  ГЁГЈГ°Г»!', 'ГЋГёГЁГЎГЄГ ' , MB_ICONERROR);
       End;
     End;
-
     GetGameWordFromFile := Word;
 End;
-
 Function CompareWords(PlayerWord: String; Path:String): Boolean;
 Var
   I, J: Integer;
   GameWord, ReversedGameWord: String;
 Begin
-  GameWord := GetGameWordFromFile(Path);
+  GameWord := Unit2.GameWord;
   J := Length(GameWord);
   ReversedGameWord := GameWord;
-
   For I := 1 To Length(GameWord) Do
   Begin
     ReversedGameWord[J] := GameWord[I];
     Dec(J);
   End;
-
   if (PlayerWord = ReversedGameWord) then
     CompareWords := True
   else
     CompareWords := False;
 End;
-
 procedure TForm2.ConfirmWordClick(Sender: TObject);
 Var
   WordCounter: Integer;
@@ -120,17 +157,14 @@ begin
   ConfirmWord.Enabled := False;
   WordCounter := 1;
   PlayerWord := EnterWord.Text;
-
   IsWordCorrect := CompareWords(PlayerWord, Path);
   if IsWordCorrect then
   Begin
     ResultLabel.Visible := True;
     ResultLabel.Font.Color := clGreen;
     ResultLabel.Left := ResultLabel.Left - 80;
-    ResultLabel.Caption := 'Правильный ответ!';
-
+    ResultLabel.Caption := 'ГЏГ°Г ГўГЁГ«ГјГ­Г»Г© Г®ГІГўГҐГІ!';
     Inc(Unit2.WordCounter);
-
     if Unit2.WordCounter > 3 then
     Begin
       Inc(Unit2.PhaseCounter);
@@ -142,15 +176,23 @@ begin
     ResultLabel.Visible := True;
     ResultLabel.Font.Color := clRed;
     ResultLabel.Left := ResultLabel.Left - 90;
-    ResultLabel.Caption := 'Неправильный ответ!';
+    ResultLabel.Caption := 'ГЌГҐГЇГ°Г ГўГЁГ«ГјГ­Г»Г© Г®ГІГўГҐГІ!';
   End;
-
   Delay(500);
   EnterWord.Text := '';
   ResultLabel.Caption := '';
   ResultLabel.Left := 254;
-
-  TimerGame.Enabled := True;
+  Phase1TimerGame.Enabled := True;
+end;
+procedure TForm2.Edit4KeyPress(Sender: TObject; var Key: Char);
+Var
+    AnsiStr: AnsiString;
+Begin
+    If (Length(EnterWord.Text) < 1) And (Key = '-') Then
+      Key := #0;
+    AnsiStr := AnsiString(Key);
+    If Not(AnsiStr[1] In ['Рђ'..'РЇ','Рђ'..'СЏ', #08, #45]) Then
+      Key := #0;
 end;
 
 procedure TForm2.EnterWordChange(Sender: TObject);
@@ -166,20 +208,46 @@ begin
     EnterWord.Font.Color := clGray;
   End;
 end;
-
 procedure TForm2.EnterWordKeyPress(Sender: TObject; var Key: Char);
-Var
-  TempKey: String;
+var
+  AnsiStr: String;
 begin
     If (Length(EnterWord.Text) < 1) And (Key = '-') Then
       Key := #0;
     AnsiStr := AnsiString(Key);
-    If Not(AnsiStr[1] In ['А'..'Я','а'..'я', #08, #45]) Then
+    If Not(AnsiStr[1] In ['Рђ'..'РЇ','Р°'..'СЏ', #08, #45]) Then
       Key := #0;
-    If (AnsiStr[1] In ['а'..'я']) Then
-    Begin
-      //
-    End;
+end;
+procedure TForm2.FifthWordEditChange(Sender: TObject);
+begin
+    InputButton.Enabled := (Length(Trim(FirstWordEdit.Text)) <> 0) And (Length(Trim(SecondWordEdit.Text)) <> 0) And (Length(Trim(ThirdWordEdit.Text)) <> 0) And (Length(Trim(FourthWordEdit.Text)) <> 0) And (Length(Trim(FifthWordEdit.Text)) <> 0);
+end;
+
+procedure TForm2.FifthWordEditKeyPress(Sender: TObject; var Key: Char);
+Var
+    AnsiStr: AnsiString;
+Begin
+    If (Length(EnterWord.Text) < 1) And (Key = '-') Then
+      Key := #0;
+    AnsiStr := AnsiString(Key);
+    If Not(AnsiStr[1] In ['Рђ'..'РЇ','Рђ'..'СЏ', #08, #45]) Then
+      Key := #0;
+end;
+
+procedure TForm2.FirstWordEditChange(Sender: TObject);
+begin
+    InputButton.Enabled := (Length(Trim(FirstWordEdit.Text)) <> 0) And (Length(Trim(SecondWordEdit.Text)) <> 0) And (Length(Trim(ThirdWordEdit.Text)) <> 0) And (Length(Trim(FourthWordEdit.Text)) <> 0) And (Length(Trim(FifthWordEdit.Text)) <> 0);
+end;
+
+procedure TForm2.FirstWordEditKeyPress(Sender: TObject; var Key: Char);
+Var
+    AnsiStr: AnsiString;
+Begin
+    If (Length(EnterWord.Text) < 1) And (Key = '-') Then
+      Key := #0;
+    AnsiStr := AnsiString(Key);
+    If Not(AnsiStr[1] In ['Рђ'..'РЇ','Рђ'..'СЏ', #08, #45]) Then
+      Key := #0;
 end;
 
 procedure TForm2.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -188,10 +256,10 @@ Var
   lpCaption, lpText: PChar;
   Tip: Integer;
 begin
-  TimerGame.Enabled := False;
+  Phase1TimerGame.Enabled := False;
   WND := Form2.Handle;
-  lpCaption := 'Выход';
-  lpText := 'Вы уверены, что хотите выйти?';
+  lpCaption := 'Г‚Г»ГµГ®Г¤';
+  lpText := 'Г‚Г» ГіГўГҐГ°ГҐГ­Г», Г·ГІГ® ГµГ®ГІГЁГІГҐ ГўГ»Г©ГІГЁ?';
   Tip := MB_YESNO + MB_ICONINFORMATION + MB_DEFBUTTON2;
   Case MessageBox(WND, lpText, lpCaption, Tip) Of
       IDYES :
@@ -199,38 +267,183 @@ begin
       IDNO :
       Begin
         CanClose := False;
-        TimerGame.Enabled := True;
+        Phase1TimerGame.Enabled := True;
       End;
   End
+end;
+procedure TForm2.FourthWordEditChange(Sender: TObject);
+Begin
+    InputButton.Enabled := (Length(Trim(FirstWordEdit.Text)) <> 0) And (Length(Trim(SecondWordEdit.Text)) <> 0) And (Length(Trim(ThirdWordEdit.Text)) <> 0) And (Length(Trim(FourthWordEdit.Text)) <> 0) And (Length(Trim(FifthWordEdit.Text)) <> 0);
+end;
+
+procedure TForm2.FourthWordEditKeyPress(Sender: TObject; var Key: Char);
+Var
+    AnsiStr: AnsiString;
+Begin
+    If (Length(EnterWord.Text) < 1) And (Key = '-') Then
+      Key := #0;
+    AnsiStr := AnsiString(Key);
+    If Not(AnsiStr[1] In ['Рђ'..'РЇ','Рђ'..'СЏ', #08, #45]) Then
+      Key := #0;
 end;
 
 procedure TForm2.GameRulesInfoClick(Sender: TObject);
 Const
-  FIRST_MESSAGE = 'Данная игра предназначена для тренировки памяти игрока.' + #13#10;
-  SECOND_MESSAGE = 'В процессе игры на экран буду выводиться слова и через некоторое время пропадать.' + #13#10;
-  THIRD_MESSAGE = 'Задачей игрока является запоминать эти слова и вводить эти же слова,но в обратном порядке.' + #13#10;
-  FOURTH_MESSAGE = 'Со временем игра начинает усложняться: слова становяться длинне.На их запоминание дается чуть больше времени.' + #13#10;
-  FIFTH_MESSAGE = 'Игра заканчивается, если игрок правильно введет три перевернутых слова из 8 букв.' + #13#10;
-  SIXTH_MESSAGE = 'При вводе учитывайте регистр символов!';
-  SEVENTH_MESSAGE = 'Удачи и успехов!';
+  FIRST_MESSAGE = 'Г„Г Г­Г­Г Гї ГЁГЈГ°Г  ГЇГ°ГҐГ¤Г­Г Г§Г­Г Г·ГҐГ­Г  Г¤Г«Гї ГІГ°ГҐГ­ГЁГ°Г®ГўГЄГЁ ГЇГ Г¬ГїГІГЁ ГЁГЈГ°Г®ГЄГ .' + #13#10;
+  SECOND_MESSAGE = 'Г‚ ГЇГ°Г®Г¶ГҐГ±Г±ГҐ ГЁГЈГ°Г» Г­Г  ГЅГЄГ°Г Г­ ГЎГіГ¤Гі ГўГ»ГўГ®Г¤ГЁГІГјГ±Гї Г±Г«Г®ГўГ  ГЁ Г·ГҐГ°ГҐГ§ Г­ГҐГЄГ®ГІГ®Г°Г®ГҐ ГўГ°ГҐГ¬Гї ГЇГ°Г®ГЇГ Г¤Г ГІГј.' + #13#10;
+  THIRD_MESSAGE = 'Г‡Г Г¤Г Г·ГҐГ© ГЁГЈГ°Г®ГЄГ  ГїГўГ«ГїГҐГІГ±Гї Г§Г ГЇГ®Г¬ГЁГ­Г ГІГј ГЅГІГЁ Г±Г«Г®ГўГ  ГЁ ГўГўГ®Г¤ГЁГІГј ГЅГІГЁ Г¦ГҐ Г±Г«Г®ГўГ , Г­Г® Гў Г®ГЎГ°Г ГІГ­Г®Г¬ ГЇГ®Г°ГїГ¤ГЄГҐ.' + #13#10;
+  FOURTH_MESSAGE = 'Г‘Г® ГўГ°ГҐГ¬ГҐГ­ГҐГ¬ ГЁГЈГ°Г  Г­Г Г·ГЁГ­Г ГҐГІ ГіГ±Г«Г®Г¦Г­ГїГІГјГ±Гї: Г±Г«Г®ГўГ  Г±ГІГ Г­Г®ГўГїГІГјГ±Гї Г¤Г«ГЁГ­Г­ГҐГҐ. ГЌГ  ГЁГµ Г§Г ГЇГ®Г¬ГЁГ­Г Г­ГЁГҐ Г¤Г ГҐГІГ±Гї Г·ГіГІГј ГЎГ®Г«ГјГёГҐ ГўГ°ГҐГ¬ГҐГ­ГЁ.' + #13#10;
+  FIFTH_MESSAGE = 'Г€ГЈГ°Г  Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГҐГ±Г«ГЁ ГЁГЈГ°Г®ГЄ ГЇГ°Г ГўГЁГ«ГјГ­Г® ГўГўГҐГ¤ГҐГІ ГІГ°ГЁ ГЇГҐГ°ГҐГўГҐГ°Г­ГіГІГ»Гµ Г±Г«Г®ГўГ  ГЁГ§ 8 ГЎГіГЄГў.' + #13#10;
+  SIXTH_MESSAGE = 'ГЏГ°ГЁ ГўГўГ®Г¤ГҐ ГіГ·ГЁГІГ»ГўГ Г©ГІГҐ Г°ГҐГЈГЁГ±ГІГ° Г±ГЁГ¬ГўГ®Г«Г®Гў!';
+  SEVENTH_MESSAGE = 'Г“Г¤Г Г·ГЁ ГЁ ГіГ±ГЇГҐГµГ®Гў!';
 begin
   Application.MessageBox(FIRST_MESSAGE + SECOND_MESSAGE + THIRD_MESSAGE +
-  FOURTH_MESSAGE + FIFTH_MESSAGE + SIXTH_MESSAGE + SEVENTH_MESSAGE, 'Правила игры');
+  FOURTH_MESSAGE + FIFTH_MESSAGE + SIXTH_MESSAGE + SEVENTH_MESSAGE, 'ГЏГ°Г ГўГЁГ«Г  ГЁГЈГ°Г»');
+end;
+procedure TForm2.InputButtonClick(Sender: TObject);
+Var
+    ArrayOfGameWords: Array[0..4] Of String;
+    I: Integer;
+begin
+    //This will take data from 8 file
+//    For I := 0 To 4 Do
+//        ArrayOfGameWords[I] := GetGameWordFromFile();
+end;
+
+procedure TForm2.NextButtonClick(Sender: TObject);
+begin
+  FirstPhase.TabVisible := False;
+  SecondPhase.Enabled := True;
+  SecondPhase.TabVisible := True;
+  FirstPhase.Enabled := False;
+  BackPanel.Visible := True;
+
+    Delay(500);
+    BeginningLabel.Visible := True;
+    Delay(300);
+    BeginningLabel.Left := BeginningLabel.Left - 5;
+    BeginningLabel.Caption := '3.';
+    Delay(300);
+    BeginningLabel.Left := BeginningLabel.Left - 5;
+    BeginningLabel.Caption := '3..';
+    Delay(300);
+    BeginningLabel.Left := BeginningLabel.Left - 5;
+    BeginningLabel.Caption := '3...';
+    Delay(300);
+    BeginningLabel.Left := BeginningLabel.Left - 5;
+    BeginningLabel.Caption := '3... 2';
+    Delay(300);
+    BeginningLabel.Left := BeginningLabel.Left - 5;
+    BeginningLabel.Caption := '3... 2.';
+    Delay(300);
+    BeginningLabel.Left := BeginningLabel.Left - 5;
+    BeginningLabel.Caption := '3... 2..';
+    Delay(300);
+    BeginningLabel.Left := BeginningLabel.Left - 5;
+    BeginningLabel.Caption := '3... 2...';
+    Delay(300);
+    BeginningLabel.Left := BeginningLabel.Left - 5;
+    BeginningLabel.Caption := '3... 2... 1';
+    Delay(300);
+    BeginningLabel.Left := BeginningLabel.Left - 5;
+    BeginningLabel.Caption := '3... 2... 1.';
+    Delay(300);
+    BeginningLabel.Left := BeginningLabel.Left - 5;
+    BeginningLabel.Caption := '3... 2... 1..';
+    Delay(300);
+    BeginningLabel.Left := BeginningLabel.Left - 5;
+    BeginningLabel.Caption := '3... 2... 1...';
+    Delay(500);
+    BeginningLabel.Left := BeginningLabel.Left - 10;
+    BeginningLabel.Caption := '3... 2... 1... ГЏГ®ГҐГµГ Г«ГЁ!';
+    Delay(100);
+    BeginningLabel.Font.Color := clGrayText;
+    BeginningLabel.Font.Color := clGrayText;
+    ReadyLabel.Font.Color := clGrayText;
+
+    FirstWordEdit.Visible := True;
+    SecondWordEdit.Visible := True;
+    ThirdWordEdit.Visible := True;
+    FourthWordEdit.Visible := True;
+    FifthWordEdit.Visible := True;
+    InputButton.Visible := True;
+end;
+
+procedure TForm2.OpenFromFileMenuClick(Sender: TObject);
+Var
+  I: Integer;
+  InputFile: TextFile;
+Begin
+  Unit2.Path_5 := '';
+  Unit2.Path_6 := '';
+  Unit2.Path_7 := '';
+  Unit2.Path_8 := '';
+  OpenFromFileDialog.Filter := 'Text files (*.txt)|*.txt|All files (*.*)|*.*';
+  if OpenFromFileDialog.Execute then
+  Begin
+    with OpenFromFileDialog.Files do
+      for I := 0 to OpenFromFileDialog.Files.Count - 1 do
+      begin
+        AssignFile(InputFile, OpenFromFileDialog.Files[I]);
+        Reset(InputFile);
+        case I of
+          0:
+          Begin
+            Unit2.Path_5 := OpenFromFileDialog.Files[I];
+          End;
+          1:
+          Begin
+            Unit2.Path_6 := OpenFromFileDialog.Files[I];
+          End;
+          2:
+          Begin
+            Unit2.Path_7 := OpenFromFileDialog.Files[I];
+          End;
+          3:
+          Begin
+            Unit2.Path_8 := OpenFromFileDialog.Files[I];
+          End;
+        end;
+        CloseFile(InputFile);
+      end;
+    if (Unit2.Path_5 <> '') And (Unit2.Path_6 <> '') And (Unit2.Path_7 <> '') And (Unit2.Path_8 <> '') then
+      StartNewGame.Enabled := True
+    else
+    Begin
+      Application.MessageBox('ГЌГҐГЇГ°Г ГўГЁГ«ГјГ­Г»Г© ГўГ»ГЎГ®Г° ГґГ Г©Г«Г®Гў, ГЇГ®ГЇГ°Г®ГЎГіГ©ГІГҐ ГҐГ№ГҐ Г°Г Г§!', 'ГЋГёГЁГЎГЄГ !', MB_ICONERROR)
+    End;
+    OpenFromFileMenu.Enabled := False;
+  End;
+end;
+procedure TForm2.SecondWordEditChange(Sender: TObject);
+begin
+    InputButton.Enabled := (Length(Trim(FirstWordEdit.Text)) <> 0) And (Length(Trim(SecondWordEdit.Text)) <> 0) And (Length(Trim(ThirdWordEdit.Text)) <> 0) And (Length(Trim(FourthWordEdit.Text)) <> 0) And (Length(Trim(FifthWordEdit.Text)) <> 0);
+end;
+
+procedure TForm2.SecondWordEditKeyPress(Sender: TObject; var Key: Char);
+Var
+    AnsiStr: AnsiString;
+begin
+    If (Length(EnterWord.Text) < 1) And (Key = '-') Then
+      Key := #0;
+    AnsiStr := AnsiString(Key);
+    If Not(AnsiStr[1] In ['Рђ'..'РЇ','Р°'..'СЏ', #08, #45]) Then
+      Key := #0;
 end;
 
 procedure TForm2.StartNewGameClick(Sender: TObject);
-Const
-  PATH_5 = 'd:\words_5.txt';
 Var
   InputFile: TextFile;
   GameWord: String;
   GameStop: Boolean;
   WordCounter, PhaseCounter: Integer;
 begin
-  BackPanel.Visible := True;
-  StartNewGame.Enabled := False;
-
-  // Обратный отсчет до начала
+    MenuPhase.TabVisible := False;
+    FirstPhase.Enabled := True;
+    FirstPhase.TabVisible := True;
+    MenuPhase.Enabled := False;
+    BackPanel.Visible := True;
+    StartNewGame.Enabled := False;
     Delay(500);
     Task2Label.Visible := True;
     Delay(300);
@@ -268,101 +481,121 @@ begin
     Task2Label.Caption := '3... 2... 1...';
     Delay(500);
     Task2Label.Left := Task2Label.Left - 10;
-    Task2Label.Caption := '3... 2... 1... Поехали!';
+    Task2Label.Caption := '3... 2... 1... ГЏГ®ГҐГµГ Г«ГЁ!';
     Delay(100);
     Task1Label.Font.Color := clGrayText;
     Task2Label.Font.Color := clGrayText;
-  // Конец обратного отсчета, начало игры
-
   GameWordLabel.Visible := True;
   EnterWord.Visible := True;
   EnterWord.Enabled := True;
   ConfirmWord.Visible := True;
+  NextButton.Visible := True;
   Unit2.PhaseCounter := 1;
   Unit2.WordCounter := 1;
-  TimerGame.Enabled := True;
+  Phase1TimerGame.Enabled := True;
   ConfirmWord.Default := True;
-  Unit2.Path := PATH_5;
+  Unit2.Path := Unit2.Path_5;
 end;
-
-procedure TForm2.TimerGameTimer(Sender: TObject);
-Const
-  PATH_5 = 'd:\words_5.txt';
-  PATH_6 = 'd:\words_6.txt';
-  PATH_7 = 'd:\words_7.txt';
-  PATH_8 = 'd:\words_8.txt';
+procedure TForm2.Phase1TimerGameTimer(Sender: TObject);
 begin
-  TimerGame.Enabled := False;
-
+  Phase1TimerGame.Enabled := False;
   if Unit2.PhaseCounter = 1 then
   Begin
-    Unit2.Path := PATH_5;
-
+    Unit2.Path := Unit2.Path_5;
     GameWordLabel.Caption := '';
     GameWordLabel.Left := 254;
-
     GameWordLabel.Caption := GetGameWordFromFile(Path);
+    Unit2.GameWord := GameWordLabel.Caption;
     Delay(1000);
     GameWordLabel.Caption := '';
     Delay(300);
     GameWordLabel.Left := GameWordLabel.Left - 200;
     GameWordLabel.Font.Size := 10;
-    GameWordLabel.Caption := 'Вспомните слово и введите его наоборот в поле ниже';
+    GameWordLabel.Caption := 'Г‚Г±ГЇГ®Г¬Г­ГЁГІГҐ Г±Г«Г®ГўГ® ГЁ ГўГўГҐГ¤ГЁГІГҐ ГҐГЈГ® Г­Г Г®ГЎГ®Г°Г®ГІ Гў ГЇГ®Г«ГҐ Г­ГЁГ¦ГҐ';
   End;
-
   if Unit2.PhaseCounter = 2 then
   Begin
-    Unit2.Path := PATH_6;
-
+    Unit2.Path := Unit2.Path_6;
     GameWordLabel.Caption := '';
     GameWordLabel.Left := 254;
-
     GameWordLabel.Caption := GetGameWordFromFile(Path);
+    Unit2.GameWord := GameWordLabel.Caption;
     Delay(1000);
     GameWordLabel.Caption := '';
     Delay(300);
     GameWordLabel.Left := GameWordLabel.Left - 200;
     GameWordLabel.Font.Size := 10;
-    GameWordLabel.Caption := 'Вспомните слово и введите его наоборот в поле ниже';
+    GameWordLabel.Caption := 'Г‚Г±ГЇГ®Г¬Г­ГЁГІГҐ Г±Г«Г®ГўГ® ГЁ ГўГўГҐГ¤ГЁГІГҐ ГҐГЈГ® Г­Г Г®ГЎГ®Г°Г®ГІ Гў ГЇГ®Г«ГҐ Г­ГЁГ¦ГҐ';
   End;
-
   if Unit2.PhaseCounter = 3 then
   Begin
-    Unit2.Path := PATH_7;
-
+    Unit2.Path := Unit2.Path_7;
     GameWordLabel.Caption := '';
     GameWordLabel.Left := 254;
-
     GameWordLabel.Caption := GetGameWordFromFile(Path);
+    Unit2.GameWord := GameWordLabel.Caption;
     Delay(1000);
     GameWordLabel.Caption := '';
     Delay(300);
     GameWordLabel.Left := GameWordLabel.Left - 200;
     GameWordLabel.Font.Size := 10;
-    GameWordLabel.Caption := 'Вспомните слово и введите его наоборот в поле ниже';
+    GameWordLabel.Caption := 'Г‚Г±ГЇГ®Г¬Г­ГЁГІГҐ Г±Г«Г®ГўГ® ГЁ ГўГўГҐГ¤ГЁГІГҐ ГҐГЈГ® Г­Г Г®ГЎГ®Г°Г®ГІ Гў ГЇГ®Г«ГҐ Г­ГЁГ¦ГҐ';
   End;
-
   if Unit2.PhaseCounter = 4 then
   Begin
-    Unit2.Path := PATH_8;
-
+    Unit2.Path := Unit2.Path_8;
     GameWordLabel.Caption := '';
     GameWordLabel.Left := 254;
-
     GameWordLabel.Caption := GetGameWordFromFile(Path);
+    Unit2.GameWord := GameWordLabel.Caption;
     Delay(1000);
     GameWordLabel.Caption := '';
     Delay(300);
     GameWordLabel.Left := GameWordLabel.Left - 200;
     GameWordLabel.Font.Size := 10;
-    GameWordLabel.Caption := 'Вспомните слово и введите его наоборот в поле ниже';
+    GameWordLabel.Caption := 'Г‚Г±ГЇГ®Г¬Г­ГЁГІГҐ Г±Г«Г®ГўГ® ГЁ ГўГўГҐГ¤ГЁГІГҐ ГҐГЈГ® Г­Г Г®ГЎГ®Г°Г®ГІ Гў ГЇГ®Г«ГҐ Г­ГЁГ¦ГҐ';
   End;
-
   if Unit2.PhaseCounter = 5 then
   Begin
     EnterWord.Enabled := False;
-    Application.MessageBox('Поздравляем с победой!Вы прошли первый этап.', 'Победа!');
+    Application.MessageBox('ГЏГ®Г§Г¤Г°Г ГўГ«ГїГҐГ¬ Г± ГЇГ®ГЎГҐГ¤Г®Г©! Г‚Г» ГЇГ°Г®ГёГ«ГЁ ГЇГҐГ°ГўГ»Г© ГЅГІГ ГЇ. ГЏГҐГ°ГҐГµГ®Г¤ГЁГ¬ ГЄ Г±Г«ГҐГ¤ГіГѕГ№ГҐГ¬Гі', 'ГЏГ®ГЎГҐГ¤Г  Гў ГЇГҐГ°ГўГ®Г¬ ГЅГІГ ГЇГҐ!');
+    NextButton.Enabled := True;
   End;
+end;
+procedure TForm2.ThirdWordEditChange(Sender: TObject);
+begin
+    InputButton.Enabled := (Length(Trim(FirstWordEdit.Text)) <> 0) And (Length(Trim(SecondWordEdit.Text)) <> 0) And (Length(Trim(ThirdWordEdit.Text)) <> 0) And (Length(Trim(FourthWordEdit.Text)) <> 0) And (Length(Trim(FifthWordEdit.Text)) <> 0);
+end;
+
+procedure TForm2.ThirdWordEditKeyPress(Sender: TObject; var Key: Char);
+Var
+    AnsiStr: AnsiString;
+Begin
+    If (Length(EnterWord.Text) < 1) And (Key = '-') Then
+      Key := #0;
+    AnsiStr := AnsiString(Key);
+    If Not(AnsiStr[1] In ['Рђ'..'РЇ','Рђ'..'СЏ', #08, #45]) Then
+      Key := #0;
+end;
+procedure TForm2.SixthWordKeyPress(Sender: TObject; var Key: Char);
+Var
+    AnsiStr: AnsiString;
+begin
+    If (Length(EnterWord.Text) < 1) And (Key = '-') Then
+      Key := #0;
+    AnsiStr := AnsiString(Key);
+    If Not(AnsiStr[1] In ['Рђ'..'РЇ','Р°'..'СЏ', #08, #45]) Then
+      Key := #0;
+end;
+procedure TForm2.SeventhWordKeyPress(Sender: TObject; var Key: Char);
+Var
+    AnsiStr: AnsiString;
+begin
+    If (Length(EnterWord.Text) < 1) And (Key = '-') Then
+      Key := #0;
+    AnsiStr := AnsiString(Key);
+    If Not(AnsiStr[1] In ['Рђ'..'РЇ','Р°'..'СЏ', #08, #45]) Then
+      Key := #0;
 end;
 
 end.
