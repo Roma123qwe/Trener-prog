@@ -1,4 +1,4 @@
-unit Unit2;
+п»їunit Unit2;
 
 interface
 
@@ -8,29 +8,10 @@ uses
   Vcl.ComCtrls;
 
 type
-  TArrStr = Array Of String;
   TForm2 = class(TForm)
     MainMenu: TMainMenu;
     GameRulesInfo: TMenuItem;
-<<<<<<< Updated upstream
-    Phase1TimerGame: TTimer;
-    PageControl: TPageControl;
-    MenuPhase: TTabSheet;
-    FirstPhase: TTabSheet;
-    SecondPhase: TTabSheet;
-    ThirdPhase: TTabSheet;
-    FourthPhase: TTabSheet;
-    FifthPhase: TTabSheet;
-    StartNewGame: TButton;
-    BackPanel: TPanel;
-    Task1Label: TLabel;
-    ResultLabel: TLabel;
-    Task2Label: TLabel;
-    GameWordLabel: TLabel;
-    ConfirmWord: TButton;
-    EnterWord: TEdit;
-=======
-    Stage1GameTimer: TTimer;
+    Stage1TimerGame: TTimer;
     PageControl: TPageControl;
     MenuStage: TTabSheet;
     FirstStage: TTabSheet;
@@ -46,7 +27,6 @@ type
     Stage1GameWordLabel: TLabel;
     Stage1ConfirmWord: TButton;
     Stage1EnterWord: TEdit;
->>>>>>> Stashed changes
     WelcomeLabel: TLabel;
     GameInfoLabel: TLabel;
     Requirement1Label: TLabel;
@@ -54,31 +34,17 @@ type
     FileMenu: TMenuItem;
     OpenFromFileMenu: TMenuItem;
     Requirement2Label: TLabel;
-<<<<<<< Updated upstream
-=======
-    Stage2Task1Label: TLabel;
-    Stage2GameWordsLabel: TLabel;
-    Stage2MemoForWords: TMemo;
-    Stage2ConfirmWordsButton: TButton;
-    Stage2GameTimer: TTimer;
-    Stage2ResultLabel: TLabel;
->>>>>>> Stashed changes
+    Label1: TLabel;
+    MemoForFileRewriting: TMemo;
+    Label2: TLabel;
     procedure StartNewGameClick(Sender: TObject);
     procedure EnterWordKeyPress(Sender: TObject; var Key: Char);
     procedure Stage1EnterWordChange(Sender: TObject);
     procedure Stage1ConfirmWordClick(Sender: TObject);
     procedure GameRulesInfoClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-<<<<<<< Updated upstream
-    procedure Phase1TimerGameTimer(Sender: TObject);
+    procedure Stage1TimerGameTimer(Sender: TObject);
     procedure OpenFromFileMenuClick(Sender: TObject);
-=======
-    procedure Stage1GameTimerTimer(Sender: TObject);
-    procedure OpenFromFileMenuClick(Sender: TObject);
-    procedure Stage2GameTimerTimer(Sender: TObject);
-    procedure Stage2ConfirmWordsButtonClick(Sender: TObject);
-    procedure Stage2MemoForWordsChange(Sender: TObject);
->>>>>>> Stashed changes
   private
   protected
   public
@@ -86,17 +52,10 @@ type
 
 var
   Form2: TForm2;
-<<<<<<< Updated upstream
   PhaseCounter, WordCounter: Integer;
   GameWord: String;
   Path, Path_5, Path_6, Path_7, Path_8: String;
 
-=======
-  StageCounter, PhaseCounter, RightCounter: Integer;
-  GameWord: String;
-  GameWords: TArrStr;
-  Path, Path_5, Path_6, Path_7, Path_8, Path_Stage2: String;
->>>>>>> Stashed changes
 
 implementation
 
@@ -126,7 +85,7 @@ Var
    Word: String;
    IsCorrect: Boolean;
    List: TStringList;
-   I, N: Integer;
+   I, J, N: Integer;
 Begin
     IsCorrect := True;
     AssignFile(InputFile,Path);
@@ -136,7 +95,7 @@ Begin
       Try
         Try
           Read(InputFile);
-          for I := 0 to Unit2.RightCounter - 1 do
+          for I := 0 to Unit2.WordCounter - 1 do
           Begin
             Randomize;
             List := TStringList.Create;
@@ -145,7 +104,7 @@ Begin
             Word := List.Strings[N];
             Word := UTF8ToAnsi(Word);
             {
-            удаление слова через memo
+            СѓРґР°Р»РµРЅРёРµ СЃР»РѕРІР° С‡РµСЂРµР· memo
             Form2.MemoForFileRewriting.Lines.LoadFromFile(Path);
             for J := 0 to Form2.MemoForFileRewriting.Lines.Count - 1 do
               if Form2.MemoForFileRewriting.Lines[J] = Word then
@@ -153,7 +112,7 @@ Begin
             Form2.MemoForFileRewriting.Lines.SaveToFile(path);
             }
             {
-            удаление через list
+            СѓРґР°Р»РµРЅРёРµ С‡РµСЂРµР· list
              List.Delete(N);
              List.SaveToFile(Path);
              List.Free;
@@ -163,54 +122,11 @@ Begin
           CloseFile(InputFile);
         End;
       Except
-        Application.MessageBox('Ошибка при чтении данных из файла игры!', 'Ошибка' , MB_ICONERROR);
+        Application.MessageBox('РћС€РёР±РєР° РїСЂРё С‡С‚РµРЅРёРё РґР°РЅРЅС‹С… РёР· С„Р°Р№Р»Р° РёРіСЂС‹!', 'РћС€РёР±РєР°' , MB_ICONERROR);
       End;
     End;
 
     GetGameWordFromFile := Word;
-End;
-
-Procedure GetGameWordsFromFileStage2(Path: String);
-Var
-  InputFile: TextFile;
-  IsCorrect: Boolean;
-  List: TStringList;
-  I, N, Length: Integer;
-Begin
-  IsCorrect := True;
-  AssignFile(InputFile,Path);
-  case Unit2.PhaseCounter of
-    1:
-      Length := 5;
-    2:
-      Length := 6;
-    3:
-      Length := 7;
-  end;
-  SetLength(Unit2.GameWords, Length);
-
-  If (IsCorrect) Then
-  Begin
-    Try
-      Try
-        Read(InputFile);
-
-        for I := 0 to Length - 1 do
-        Begin
-          Randomize;
-          List := TStringList.Create;
-          List.LoadFromFile(Path);
-          N := random(List.Count);
-          Unit2.GameWords[I] := List.Strings[N];
-          Unit2.GameWords[I] := UTF8ToAnsi(Unit2.GameWords[I]);
-        End;
-      Finally
-        CloseFile(InputFile);
-      End;
-    Except
-      //Application.MessageBox('Ошибка при чтении данных из файла игры!', 'Ошибка' , MB_ICONERROR);
-    End;
-  End;
 End;
 
 Function CompareWords(PlayerWord: String; Path:String): Boolean;
@@ -234,36 +150,14 @@ Begin
     CompareWords := False;
 End;
 
-Function CompareWordsStage2(PlayerWords: TArrStr; Path: String): Boolean;
-Var
-  I, J, CorrectWordsCounter: Integer;
-  IsWordsCorrect: Boolean;
-Begin
-  CorrectWordsCounter := 0;
-
-  for I := Low(Unit2.GameWords) to High(Unit2.GameWords) do
-  Begin
-    for J := Low(PlayerWords) to High(PlayerWords) do
-    Begin
-      if PlayerWords[I] = Unit2.GameWords[I] then
-        Inc(CorrectWordsCounter);
-    End;
-  End;
-
-  if CorrectWordsCounter = High(Unit2.GameWords) then
-    IsWordsCorrect := True
-  else
-    IsWordsCorrect := False;
-
-  CompareWordsStage2 := IsWordsCorrect;
-End;
-
 procedure TForm2.Stage1ConfirmWordClick(Sender: TObject);
 Var
+  WordCounter: Integer;
   IsWordCorrect: Boolean;
   GameWord, PlayerWord: String;
 begin
   Stage1ConfirmWord.Enabled := False;
+  WordCounter := 1;
   PlayerWord := Stage1EnterWord.Text;
 
   IsWordCorrect := CompareWords(PlayerWord, Path);
@@ -272,14 +166,14 @@ begin
     Stage1ResultLabel.Visible := True;
     Stage1ResultLabel.Font.Color := clGreen;
     Stage1ResultLabel.Left := Stage1ResultLabel.Left - 80;
-    Stage1ResultLabel.Caption := 'Правильный ответ!';
+    Stage1ResultLabel.Caption := 'РџСЂР°РІРёР»СЊРЅС‹Р№ РѕС‚РІРµС‚!';
 
-    Inc(Unit2.RightCounter);
+    Inc(Unit2.WordCounter);
 
-    if Unit2.RightCounter > 3 then
+    if Unit2.WordCounter > 3 then
     Begin
       Inc(Unit2.PhaseCounter);
-      Unit2.RightCounter := 1;
+      Unit2.WordCounter := 1;
     End;
   End
   Else
@@ -287,7 +181,7 @@ begin
     Stage1ResultLabel.Visible := True;
     Stage1ResultLabel.Font.Color := clRed;
     Stage1ResultLabel.Left := Stage1ResultLabel.Left - 90;
-    Stage1ResultLabel.Caption := 'Неправильный ответ!';
+    Stage1ResultLabel.Caption := 'РќРµРїСЂР°РІРёР»СЊРЅС‹Р№ РѕС‚РІРµС‚!';
   End;
 
   Delay(500);
@@ -295,11 +189,7 @@ begin
   Stage1ResultLabel.Caption := '';
   Stage1ResultLabel.Left := 254;
 
-<<<<<<< Updated upstream
-  Phase1TimerGame.Enabled := True;
-=======
-  Stage1GameTimer.Enabled := True;
->>>>>>> Stashed changes
+  Stage1TimerGame.Enabled := True;
 end;
 
 procedure TForm2.Stage1EnterWordChange(Sender: TObject);
@@ -323,7 +213,7 @@ begin
     If (Length(Stage1EnterWord.Text) < 1) And (Key = '-') Then
       Key := #0;
     AnsiStr := AnsiString(Key);
-    If Not(AnsiStr[1] In ['А'..'Я','а'..'я', #08, #45]) Then
+    If Not(AnsiStr[1] In ['Рђ'..'РЇ','Р°'..'СЏ', #08, #45]) Then
       Key := #0;
 end;
 
@@ -333,23 +223,10 @@ Var
   lpCaption, lpText: PChar;
   Tip: Integer;
 begin
-<<<<<<< Updated upstream
-  Phase1TimerGame.Enabled := False;
-=======
-  case Unit2.StageCounter of
-    1:
-    Begin
-      Stage1GameTimer.Enabled := False;
-    End;
-    2:
-    Begin
-      Stage2GameTimer.Enabled := False;
-    End;
-  end;
->>>>>>> Stashed changes
+  Stage1TimerGame.Enabled := False;
   WND := Form2.Handle;
-  lpCaption := 'Выход';
-  lpText := 'Вы уверены, что хотите выйти?';
+  lpCaption := 'Р’С‹С…РѕРґ';
+  lpText := 'Р’С‹ СѓРІРµСЂРµРЅС‹, С‡С‚Рѕ С…РѕС‚РёС‚Рµ РІС‹Р№С‚Рё?';
   Tip := MB_YESNO + MB_ICONINFORMATION + MB_DEFBUTTON2;
   Case MessageBox(WND, lpText, lpCaption, Tip) Of
       IDYES :
@@ -357,36 +234,23 @@ begin
       IDNO :
       Begin
         CanClose := False;
-<<<<<<< Updated upstream
-        Phase1TimerGame.Enabled := True;
-=======
-        case Unit2.StageCounter of
-          1:
-          Begin
-            Stage1GameTimer.Enabled := True;
-          End;
-          2:
-          Begin
-            Stage2GameTimer.Enabled := True;
-          End;
-        end;
->>>>>>> Stashed changes
+        Stage1TimerGame.Enabled := True;
       End;
   End
 end;
 
 procedure TForm2.GameRulesInfoClick(Sender: TObject);
 Const
-  FIRST_MESSAGE = 'Данная игра предназначена для тренировки памяти игрока.' + #13#10;
-  SECOND_MESSAGE = 'В процессе игры на экран буду выводиться слова и через некоторое время пропадать.' + #13#10;
-  THIRD_MESSAGE = 'Задачей игрока является запоминать эти слова и вводить эти же слова, но в обратном порядке.' + #13#10;
-  FOURTH_MESSAGE = 'Со временем игра начинает усложняться: слова становяться длиннее. На их запоминание дается чуть больше времени.' + #13#10;
-  FIFTH_MESSAGE = 'Игра заканчивается, если игрок правильно введет три перевернутых слова из 8 букв.' + #13#10;
-  SIXTH_MESSAGE = 'При вводе учитывайте регистр символов!';
-  SEVENTH_MESSAGE = 'Удачи и успехов!';
+  FIRST_MESSAGE = 'Р”Р°РЅРЅР°СЏ РёРіСЂР° РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅР° РґР»СЏ С‚СЂРµРЅРёСЂРѕРІРєРё РїР°РјСЏС‚Рё РёРіСЂРѕРєР°.' + #13#10;
+  SECOND_MESSAGE = 'Р’ РїСЂРѕС†РµСЃСЃРµ РёРіСЂС‹ РЅР° СЌРєСЂР°РЅ Р±СѓРґСѓ РІС‹РІРѕРґРёС‚СЊСЃСЏ СЃР»РѕРІР° Рё С‡РµСЂРµР· РЅРµРєРѕС‚РѕСЂРѕРµ РІСЂРµРјСЏ РїСЂРѕРїР°РґР°С‚СЊ.' + #13#10;
+  THIRD_MESSAGE = 'Р—Р°РґР°С‡РµР№ РёРіСЂРѕРєР° СЏРІР»СЏРµС‚СЃСЏ Р·Р°РїРѕРјРёРЅР°С‚СЊ СЌС‚Рё СЃР»РѕРІР° Рё РІРІРѕРґРёС‚СЊ СЌС‚Рё Р¶Рµ СЃР»РѕРІР°, РЅРѕ РІ РѕР±СЂР°С‚РЅРѕРј РїРѕСЂСЏРґРєРµ.' + #13#10;
+  FOURTH_MESSAGE = 'РЎРѕ РІСЂРµРјРµРЅРµРј РёРіСЂР° РЅР°С‡РёРЅР°РµС‚ СѓСЃР»РѕР¶РЅСЏС‚СЊСЃСЏ: СЃР»РѕРІР° СЃС‚Р°РЅРѕРІСЏС‚СЊСЃСЏ РґР»РёРЅРЅРµРµ. РќР° РёС… Р·Р°РїРѕРјРёРЅР°РЅРёРµ РґР°РµС‚СЃСЏ С‡СѓС‚СЊ Р±РѕР»СЊС€Рµ РІСЂРµРјРµРЅРё.' + #13#10;
+  FIFTH_MESSAGE = 'РРіСЂР° Р·Р°РєР°РЅС‡РёРІР°РµС‚СЃСЏ, РµСЃР»Рё РёРіСЂРѕРє РїСЂР°РІРёР»СЊРЅРѕ РІРІРµРґРµС‚ С‚СЂРё РїРµСЂРµРІРµСЂРЅСѓС‚С‹С… СЃР»РѕРІР° РёР· 8 Р±СѓРєРІ.' + #13#10;
+  SIXTH_MESSAGE = 'РџСЂРё РІРІРѕРґРµ СѓС‡РёС‚С‹РІР°Р№С‚Рµ СЂРµРіРёСЃС‚СЂ СЃРёРјРІРѕР»РѕРІ!';
+  SEVENTH_MESSAGE = 'РЈРґР°С‡Рё Рё СѓСЃРїРµС…РѕРІ!';
 begin
   Application.MessageBox(FIRST_MESSAGE + SECOND_MESSAGE + THIRD_MESSAGE +
-  FOURTH_MESSAGE + FIFTH_MESSAGE + SIXTH_MESSAGE + SEVENTH_MESSAGE, 'Правила игры');
+  FOURTH_MESSAGE + FIFTH_MESSAGE + SIXTH_MESSAGE + SEVENTH_MESSAGE, 'РџСЂР°РІРёР»Р° РёРіСЂС‹');
 end;
 
 procedure TForm2.OpenFromFileMenuClick(Sender: TObject);
@@ -398,10 +262,6 @@ Begin
   Unit2.Path_6 := '';
   Unit2.Path_7 := '';
   Unit2.Path_8 := '';
-<<<<<<< Updated upstream
-=======
-  Unit2.Path_Stage2 := '';
->>>>>>> Stashed changes
 
   OpenFromFileDialog.Filter := 'Text files (*.txt)|*.txt|All files (*.*)|*.*';
   if OpenFromFileDialog.Execute then
@@ -428,35 +288,19 @@ Begin
           Begin
             Unit2.Path_8 := OpenFromFileDialog.Files[I];
           End;
-<<<<<<< Updated upstream
-=======
-          4:
-          Begin
-            Unit2.Path_Stage2 := OpenFromFileDialog.Files[I];
-          End;
->>>>>>> Stashed changes
         end;
         CloseFile(InputFile);
       end;
 
-<<<<<<< Updated upstream
     if (Unit2.Path_5 <> '') And (Unit2.Path_6 <> '') And (Unit2.Path_7 <> '') And (Unit2.Path_8 <> '') then
-=======
-    if (Unit2.Path_5 <> '') And (Unit2.Path_6 <> '') And (Unit2.Path_7 <> '') And (Unit2.Path_8 <> '') And (Unit2.Path_Stage2 <> '') then
->>>>>>> Stashed changes
       StartNewGame.Enabled := True
     else
     Begin
-      Application.MessageBox('Неправильный выбор файлов, попробуйте еще раз!', 'Ошибка!', MB_ICONERROR)
+      Application.MessageBox('РќРµРїСЂР°РІРёР»СЊРЅС‹Р№ РІС‹Р±РѕСЂ С„Р°Р№Р»РѕРІ, РїРѕРїСЂРѕР±СѓР№С‚Рµ РµС‰Рµ СЂР°Р·!', 'РћС€РёР±РєР°!', MB_ICONERROR)
     End;
-<<<<<<< Updated upstream
-
-    OpenFromFileMenu.Enabled := False;
-=======
->>>>>>> Stashed changes
   End
   Else
-    Application.MessageBox('Вы закрыли окно, попробуйте ещё раз.', 'Ошибка!', MB_ICONERROR)
+    Application.MessageBox('Р’С‹ Р·Р°РєСЂС‹Р»Рё РѕРєРЅРѕ, РїРѕРїСЂРѕР±СѓР№С‚Рµ РµС‰С‘ СЂР°Р·.', 'РћС€РёР±РєР°!', MB_ICONERROR)
 end;
 
 procedure TForm2.StartNewGameClick(Sender: TObject);
@@ -466,22 +310,14 @@ Var
   GameStop: Boolean;
   WordCounter, PhaseCounter: Integer;
 begin
-<<<<<<< Updated upstream
-  MenuPhase.TabVisible := False;
-  FirstPhase.Enabled := True;
-  FirstPhase.TabVisible := True;
-  MenuPhase.Enabled := False;
-  BackPanel.Visible := True;
-=======
   MenuStage.TabVisible := False;
   FirstStage.Enabled := True;
   FirstStage.TabVisible := True;
   MenuStage.Enabled := False;
   Stage1BackPanel.Visible := True;
->>>>>>> Stashed changes
   StartNewGame.Enabled := False;
 
-  // Обратный отсчет до начала
+  // РћР±СЂР°С‚РЅС‹Р№ РѕС‚СЃС‡РµС‚ РґРѕ РЅР°С‡Р°Р»Р°
     Delay(500);
     Stage1Task2Label.Visible := True;
     Delay(300);
@@ -519,39 +355,26 @@ begin
     Stage1Task2Label.Caption := '3... 2... 1...';
     Delay(500);
     Stage1Task2Label.Left := Stage1Task2Label.Left - 10;
-    Stage1Task2Label.Caption := '3... 2... 1... Поехали!';
+    Stage1Task2Label.Caption := '3... 2... 1... РџРѕРµС…Р°Р»Рё!';
     Delay(100);
     Stage1Task1Label.Font.Color := clGrayText;
     Stage1Task2Label.Font.Color := clGrayText;
-  // Конец обратного отсчета, начало игры
+  // РљРѕРЅРµС† РѕР±СЂР°С‚РЅРѕРіРѕ РѕС‚СЃС‡РµС‚Р°, РЅР°С‡Р°Р»Рѕ РёРіСЂС‹
 
   Stage1GameWordLabel.Visible := True;
   Stage1EnterWord.Visible := True;
   Stage1EnterWord.Enabled := True;
   Stage1ConfirmWord.Visible := True;
-  Unit2.StageCounter := 1;
-  Unit2.PhaseCounter := 1;
-<<<<<<< Updated upstream
+  Unit2.PhaseCounter := 5;
   Unit2.WordCounter := 1;
-  Phase1TimerGame.Enabled := True;
-  ConfirmWord.Default := True;
-  Unit2.Path := Unit2.Path_5;
-end;
-
-procedure TForm2.Phase1TimerGameTimer(Sender: TObject);
-begin
-  Phase1TimerGame.Enabled := False;
-=======
-  Unit2.RightCounter := 1;
-  Stage1GameTimer.Enabled := True;
+  Stage1TimerGame.Enabled := True;
   Stage1ConfirmWord.Default := True;
   Unit2.Path := Unit2.Path_5;
 end;
 
-procedure TForm2.Stage1GameTimerTimer(Sender: TObject);
+procedure TForm2.Stage1TimerGameTimer(Sender: TObject);
 begin
-  Stage1GameTimer.Enabled := False;
->>>>>>> Stashed changes
+  Stage1TimerGame.Enabled := False;
 
   if Unit2.PhaseCounter = 1 then
   Begin
@@ -560,19 +383,14 @@ begin
     Stage1GameWordLabel.Caption := '';
     Stage1GameWordLabel.Left := 254;
 
-<<<<<<< Updated upstream
-    GameWordLabel.Caption := GetGameWordFromFile(Path);
-    Unit2.GameWord := GameWordLabel.Caption;
-=======
     Stage1GameWordLabel.Caption := GetGameWordFromFile(Path);
     Unit2.GameWord := Stage1GameWordLabel.Caption;
->>>>>>> Stashed changes
     Delay(1000);
     Stage1GameWordLabel.Caption := '';
     Delay(300);
     Stage1GameWordLabel.Left := Stage1GameWordLabel.Left - 200;
     Stage1GameWordLabel.Font.Size := 10;
-    Stage1GameWordLabel.Caption := 'Вспомните слово и введите его наоборот в поле ниже';
+    Stage1GameWordLabel.Caption := 'Р’СЃРїРѕРјРЅРёС‚Рµ СЃР»РѕРІРѕ Рё РІРІРµРґРёС‚Рµ РµРіРѕ РЅР°РѕР±РѕСЂРѕС‚ РІ РїРѕР»Рµ РЅРёР¶Рµ';
   End;
 
   if Unit2.PhaseCounter = 2 then
@@ -582,19 +400,14 @@ begin
     Stage1GameWordLabel.Caption := '';
     Stage1GameWordLabel.Left := 254;
 
-<<<<<<< Updated upstream
-    GameWordLabel.Caption := GetGameWordFromFile(Path);
-    Unit2.GameWord := GameWordLabel.Caption;
-=======
     Stage1GameWordLabel.Caption := GetGameWordFromFile(Path);
     Unit2.GameWord := Stage1GameWordLabel.Caption;
->>>>>>> Stashed changes
     Delay(1000);
     Stage1GameWordLabel.Caption := '';
     Delay(300);
     Stage1GameWordLabel.Left := Stage1GameWordLabel.Left - 200;
     Stage1GameWordLabel.Font.Size := 10;
-    Stage1GameWordLabel.Caption := 'Вспомните слово и введите его наоборот в поле ниже';
+    Stage1GameWordLabel.Caption := 'Р’СЃРїРѕРјРЅРёС‚Рµ СЃР»РѕРІРѕ Рё РІРІРµРґРёС‚Рµ РµРіРѕ РЅР°РѕР±РѕСЂРѕС‚ РІ РїРѕР»Рµ РЅРёР¶Рµ';
   End;
 
   if Unit2.PhaseCounter = 3 then
@@ -604,19 +417,14 @@ begin
     Stage1GameWordLabel.Caption := '';
     Stage1GameWordLabel.Left := 254;
 
-<<<<<<< Updated upstream
-    GameWordLabel.Caption := GetGameWordFromFile(Path);
-    Unit2.GameWord := GameWordLabel.Caption;
-=======
     Stage1GameWordLabel.Caption := GetGameWordFromFile(Path);
     Unit2.GameWord := Stage1GameWordLabel.Caption;
->>>>>>> Stashed changes
     Delay(1000);
     Stage1GameWordLabel.Caption := '';
     Delay(300);
     Stage1GameWordLabel.Left := Stage1GameWordLabel.Left - 200;
     Stage1GameWordLabel.Font.Size := 10;
-    Stage1GameWordLabel.Caption := 'Вспомните слово и введите его наоборот в поле ниже';
+    Stage1GameWordLabel.Caption := 'Р’СЃРїРѕРјРЅРёС‚Рµ СЃР»РѕРІРѕ Рё РІРІРµРґРёС‚Рµ РµРіРѕ РЅР°РѕР±РѕСЂРѕС‚ РІ РїРѕР»Рµ РЅРёР¶Рµ';
   End;
 
   if Unit2.PhaseCounter = 4 then
@@ -626,124 +434,24 @@ begin
     Stage1GameWordLabel.Caption := '';
     Stage1GameWordLabel.Left := 254;
 
-<<<<<<< Updated upstream
-    GameWordLabel.Caption := GetGameWordFromFile(Path);
-    Unit2.GameWord := GameWordLabel.Caption;
-=======
     Stage1GameWordLabel.Caption := GetGameWordFromFile(Path);
     Unit2.GameWord := Stage1GameWordLabel.Caption;
->>>>>>> Stashed changes
     Delay(1000);
     Stage1GameWordLabel.Caption := '';
     Delay(300);
     Stage1GameWordLabel.Left := Stage1GameWordLabel.Left - 200;
     Stage1GameWordLabel.Font.Size := 10;
-    Stage1GameWordLabel.Caption := 'Вспомните слово и введите его наоборот в поле ниже';
+    Stage1GameWordLabel.Caption := 'Р’СЃРїРѕРјРЅРёС‚Рµ СЃР»РѕРІРѕ Рё РІРІРµРґРёС‚Рµ РµРіРѕ РЅР°РѕР±РѕСЂРѕС‚ РІ РїРѕР»Рµ РЅРёР¶Рµ';
   End;
 
   if Unit2.PhaseCounter = 5 then
   Begin
-<<<<<<< Updated upstream
-    EnterWord.Enabled := False;
-    Application.MessageBox('Поздравляем с победой! Вы прошли первый этап. Переходим к следующему', 'Победа в первом этапе!');
-=======
     Stage1EnterWord.Enabled := False;
-    Application.MessageBox('Поздравляем с победой! Вы прошли первый этап. Переходим к следующему', 'Победа в первом этапе!');
-
-    Unit2.StageCounter := 2;
-    Unit2.PhaseCounter := 1;
+    Application.MessageBox('РџРѕР·РґСЂР°РІР»СЏРµРј СЃ РїРѕР±РµРґРѕР№! Р’С‹ РїСЂРѕС€Р»Рё РїРµСЂРІС‹Р№ СЌС‚Р°Рї. РџРµСЂРµС…РѕРґРёРј Рє СЃР»РµРґСѓСЋС‰РµРјСѓ', 'РџРѕР±РµРґР° РІ РїРµСЂРІРѕРј СЌС‚Р°РїРµ!');
     FirstStage.TabVisible := False;
     FirstStage.Enabled := False;
-    SecondStage.TabVisible := True;
-    SecondStage.Enabled := True;
-    Stage2ConfirmWordsButton.Default := True;
-    Stage2GameTimer.Enabled := True;
-    Stage2GameWordsLabel.Visible := True;
-  End;
-end;
-
-procedure TForm2.Stage2ConfirmWordsButtonClick(Sender: TObject);
-Var
-  IsWordsCorrect: Boolean;
-  PlayerWords: TArrStr;
-  I: Integer;
-begin
-  Stage2ConfirmWordsButton.Enabled := False;
-  SetLength(PlayerWords, Length(Unit2.GameWords));
-  for I := Low(Unit2.GameWords) to High(Unit2.GameWords) - 1 do
-  Begin
-    PlayerWords[I] := Form2.Stage2MemoForWords.Lines[I];
-  End;
-
-  IsWordsCorrect := CompareWordsStage2(PlayerWords, Path);
-  if IsWordsCorrect then
-  Begin
-    Stage2ResultLabel.Visible := True;
-    Stage2ResultLabel.Font.Color := clGreen;
-    Stage2ResultLabel.Left := 358;
-    Stage2ResultLabel.Caption := 'Правильный ответ!';
-
-    Inc(Unit2.RightCounter);
-
-    if Unit2.RightCounter > 3 then
-    Begin
-      Inc(Unit2.PhaseCounter);
-      Unit2.RightCounter := 1;
-    End;
-  End
-  Else
-  Begin
-    Stage2ResultLabel.Visible := True;
-    Stage2ResultLabel.Font.Color := clRed;
-    Stage2ResultLabel.Left := 348;
-    Stage2ResultLabel.Caption := 'Неправильный ответ!';
-  End;
-
-  Delay(500);
-  Form2.Stage2MemoForWords.Clear;
-  Stage2ResultLabel.Caption := '';
-  Stage2ResultLabel.Left := 288;
-
-  Stage2GameTimer.Enabled := True;
-end;
-
-procedure TForm2.Stage2GameTimerTimer(Sender: TObject);
-Var
-  GameString: String;
-  I: Integer;
-begin
-  Stage2GameTimer.Enabled := False;
-  Unit2.Path := Unit2.Path_Stage2;
-
-  if Unit2.PhaseCounter = 1 then
-  Begin
-    Stage2GameWordsLabel.Caption := '';
-    Stage2GameWordsLabel.Left := 120;
-    GetGameWordsFromFileStage2(Unit2.Path);
-
-    for I := Low(Unit2.GameWords) to High(Unit2.GameWords) do
-      GameString := GameString + Unit2.GameWords[I] + ' ';
-    Stage2GameWordsLabel.Caption := GameString;
-
-    Delay(1000);
-    Stage2GameWordsLabel.Caption := '';
-    Delay(300);
-    Stage2GameWordsLabel.Left := 64;
-    Stage2GameWordsLabel.Font.Size := 9;
-    Stage2GameWordsLabel.Caption := 'Вспомните слова и введите их все в поле ниже. Порядок не важен.';
-  End;
-end;
-
-procedure TForm2.Stage2MemoForWordsChange(Sender: TObject);
-begin
-  If(Stage2MemoForWords.Lines[0] <> '') then
-  Begin
-    Stage2ConfirmWordsButton.Enabled := True;
-  End
-  Else
-  Begin
-    Stage2ConfirmWordsButton.Enabled := False;
->>>>>>> Stashed changes
+    SecondPhase.TabVisible := True;
+    SecondPhase.Enabled := True;
   End;
 end;
 
