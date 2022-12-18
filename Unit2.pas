@@ -13,6 +13,7 @@ type
     MainMenu: TMainMenu;
     GameRulesInfo: TMenuItem;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     Phase1TimerGame: TTimer;
     PageControl: TPageControl;
     MenuPhase: TTabSheet;
@@ -30,6 +31,8 @@ type
     ConfirmWord: TButton;
     EnterWord: TEdit;
 =======
+=======
+>>>>>>> Stashed changes
     Stage1GameTimer: TTimer;
     PageControl: TPageControl;
     MenuStage: TTabSheet;
@@ -46,6 +49,9 @@ type
     Stage1GameWordLabel: TLabel;
     Stage1ConfirmWord: TButton;
     Stage1EnterWord: TEdit;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     WelcomeLabel: TLabel;
     GameInfoLabel: TLabel;
@@ -55,13 +61,19 @@ type
     OpenFromFileMenu: TMenuItem;
     Requirement2Label: TLabel;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
     Stage2Task1Label: TLabel;
     Stage2GameWordsLabel: TLabel;
     Stage2MemoForWords: TMemo;
     Stage2ConfirmWordsButton: TButton;
     Stage2GameTimer: TTimer;
     Stage2ResultLabel: TLabel;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     procedure StartNewGameClick(Sender: TObject);
     procedure EnterWordKeyPress(Sender: TObject; var Key: Char);
@@ -70,14 +82,20 @@ type
     procedure GameRulesInfoClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     procedure Phase1TimerGameTimer(Sender: TObject);
     procedure OpenFromFileMenuClick(Sender: TObject);
 =======
+=======
+>>>>>>> Stashed changes
     procedure Stage1GameTimerTimer(Sender: TObject);
     procedure OpenFromFileMenuClick(Sender: TObject);
     procedure Stage2GameTimerTimer(Sender: TObject);
     procedure Stage2ConfirmWordsButtonClick(Sender: TObject);
     procedure Stage2MemoForWordsChange(Sender: TObject);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   private
   protected
@@ -87,15 +105,21 @@ type
 var
   Form2: TForm2;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   PhaseCounter, WordCounter: Integer;
   GameWord: String;
   Path, Path_5, Path_6, Path_7, Path_8: String;
 
 =======
+=======
+>>>>>>> Stashed changes
   StageCounter, PhaseCounter, RightCounter: Integer;
   GameWord: String;
   GameWords: TArrStr;
   Path, Path_5, Path_6, Path_7, Path_8, Path_Stage2: String;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 implementation
@@ -296,7 +320,11 @@ begin
   Stage1ResultLabel.Left := 254;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   Phase1TimerGame.Enabled := True;
+=======
+  Stage1GameTimer.Enabled := True;
+>>>>>>> Stashed changes
 =======
   Stage1GameTimer.Enabled := True;
 >>>>>>> Stashed changes
@@ -334,8 +362,11 @@ Var
   Tip: Integer;
 begin
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   Phase1TimerGame.Enabled := False;
 =======
+=======
+>>>>>>> Stashed changes
   case Unit2.StageCounter of
     1:
     Begin
@@ -346,6 +377,9 @@ begin
       Stage2GameTimer.Enabled := False;
     End;
   end;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   WND := Form2.Handle;
   lpCaption := 'Выход';
@@ -358,8 +392,11 @@ begin
       Begin
         CanClose := False;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         Phase1TimerGame.Enabled := True;
 =======
+=======
+>>>>>>> Stashed changes
         case Unit2.StageCounter of
           1:
           Begin
@@ -370,6 +407,9 @@ begin
             Stage2GameTimer.Enabled := True;
           End;
         end;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
       End;
   End
@@ -399,6 +439,10 @@ Begin
   Unit2.Path_7 := '';
   Unit2.Path_8 := '';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+  Unit2.Path_Stage2 := '';
+>>>>>>> Stashed changes
 =======
   Unit2.Path_Stage2 := '';
 >>>>>>> Stashed changes
@@ -429,18 +473,28 @@ Begin
             Unit2.Path_8 := OpenFromFileDialog.Files[I];
           End;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
           4:
           Begin
             Unit2.Path_Stage2 := OpenFromFileDialog.Files[I];
           End;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         end;
         CloseFile(InputFile);
       end;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     if (Unit2.Path_5 <> '') And (Unit2.Path_6 <> '') And (Unit2.Path_7 <> '') And (Unit2.Path_8 <> '') then
+=======
+    if (Unit2.Path_5 <> '') And (Unit2.Path_6 <> '') And (Unit2.Path_7 <> '') And (Unit2.Path_8 <> '') And (Unit2.Path_Stage2 <> '') then
+>>>>>>> Stashed changes
 =======
     if (Unit2.Path_5 <> '') And (Unit2.Path_6 <> '') And (Unit2.Path_7 <> '') And (Unit2.Path_8 <> '') And (Unit2.Path_Stage2 <> '') then
 >>>>>>> Stashed changes
@@ -450,8 +504,11 @@ Begin
       Application.MessageBox('Неправильный выбор файлов, попробуйте еще раз!', 'Ошибка!', MB_ICONERROR)
     End;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
     OpenFromFileMenu.Enabled := False;
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
   End
@@ -467,17 +524,23 @@ Var
   WordCounter, PhaseCounter: Integer;
 begin
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   MenuPhase.TabVisible := False;
   FirstPhase.Enabled := True;
   FirstPhase.TabVisible := True;
   MenuPhase.Enabled := False;
   BackPanel.Visible := True;
 =======
+=======
+>>>>>>> Stashed changes
   MenuStage.TabVisible := False;
   FirstStage.Enabled := True;
   FirstStage.TabVisible := True;
   MenuStage.Enabled := False;
   Stage1BackPanel.Visible := True;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   StartNewGame.Enabled := False;
 
@@ -532,6 +595,7 @@ begin
   Unit2.StageCounter := 1;
   Unit2.PhaseCounter := 1;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   Unit2.WordCounter := 1;
   Phase1TimerGame.Enabled := True;
   ConfirmWord.Default := True;
@@ -552,6 +616,17 @@ procedure TForm2.Stage1GameTimerTimer(Sender: TObject);
 begin
   Stage1GameTimer.Enabled := False;
 >>>>>>> Stashed changes
+=======
+  Unit2.RightCounter := 1;
+  Stage1GameTimer.Enabled := True;
+  Stage1ConfirmWord.Default := True;
+  Unit2.Path := Unit2.Path_5;
+end;
+
+procedure TForm2.Stage1GameTimerTimer(Sender: TObject);
+begin
+  Stage1GameTimer.Enabled := False;
+>>>>>>> Stashed changes
 
   if Unit2.PhaseCounter = 1 then
   Begin
@@ -561,8 +636,13 @@ begin
     Stage1GameWordLabel.Left := 254;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     GameWordLabel.Caption := GetGameWordFromFile(Path);
     Unit2.GameWord := GameWordLabel.Caption;
+=======
+    Stage1GameWordLabel.Caption := GetGameWordFromFile(Path);
+    Unit2.GameWord := Stage1GameWordLabel.Caption;
+>>>>>>> Stashed changes
 =======
     Stage1GameWordLabel.Caption := GetGameWordFromFile(Path);
     Unit2.GameWord := Stage1GameWordLabel.Caption;
@@ -583,8 +663,13 @@ begin
     Stage1GameWordLabel.Left := 254;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     GameWordLabel.Caption := GetGameWordFromFile(Path);
     Unit2.GameWord := GameWordLabel.Caption;
+=======
+    Stage1GameWordLabel.Caption := GetGameWordFromFile(Path);
+    Unit2.GameWord := Stage1GameWordLabel.Caption;
+>>>>>>> Stashed changes
 =======
     Stage1GameWordLabel.Caption := GetGameWordFromFile(Path);
     Unit2.GameWord := Stage1GameWordLabel.Caption;
@@ -605,8 +690,13 @@ begin
     Stage1GameWordLabel.Left := 254;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     GameWordLabel.Caption := GetGameWordFromFile(Path);
     Unit2.GameWord := GameWordLabel.Caption;
+=======
+    Stage1GameWordLabel.Caption := GetGameWordFromFile(Path);
+    Unit2.GameWord := Stage1GameWordLabel.Caption;
+>>>>>>> Stashed changes
 =======
     Stage1GameWordLabel.Caption := GetGameWordFromFile(Path);
     Unit2.GameWord := Stage1GameWordLabel.Caption;
@@ -627,8 +717,13 @@ begin
     Stage1GameWordLabel.Left := 254;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     GameWordLabel.Caption := GetGameWordFromFile(Path);
     Unit2.GameWord := GameWordLabel.Caption;
+=======
+    Stage1GameWordLabel.Caption := GetGameWordFromFile(Path);
+    Unit2.GameWord := Stage1GameWordLabel.Caption;
+>>>>>>> Stashed changes
 =======
     Stage1GameWordLabel.Caption := GetGameWordFromFile(Path);
     Unit2.GameWord := Stage1GameWordLabel.Caption;
@@ -644,9 +739,12 @@ begin
   if Unit2.PhaseCounter = 5 then
   Begin
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     EnterWord.Enabled := False;
     Application.MessageBox('Поздравляем с победой! Вы прошли первый этап. Переходим к следующему', 'Победа в первом этапе!');
 =======
+=======
+>>>>>>> Stashed changes
     Stage1EnterWord.Enabled := False;
     Application.MessageBox('Поздравляем с победой! Вы прошли первый этап. Переходим к следующему', 'Победа в первом этапе!');
 
@@ -743,6 +841,9 @@ begin
   Else
   Begin
     Stage2ConfirmWordsButton.Enabled := False;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   End;
 end;

@@ -23,9 +23,15 @@ object Form2: TForm2
     Width = 514
     Height = 325
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     ActivePage = MenuPhase
     TabOrder = 0
     object MenuPhase: TTabSheet
+=======
+    ActivePage = MenuStage
+    TabOrder = 0
+    object MenuStage: TTabSheet
+>>>>>>> Stashed changes
 =======
     ActivePage = MenuStage
     TabOrder = 0
@@ -117,6 +123,7 @@ object Form2: TForm2
         TabOrder = 0
         OnClick = StartNewGameClick
       end
+<<<<<<< Updated upstream
     end
 <<<<<<< Updated upstream
     object FirstPhase: TTabSheet
@@ -357,6 +364,191 @@ object Form2: TForm2
 =======
     object FifthStage: TTabSheet
 >>>>>>> Stashed changes
+=======
+    end
+    object FirstStage: TTabSheet
+      Caption = #1055#1077#1088#1074#1099#1081' '#1101#1090#1072#1087
+      Enabled = False
+      ImageIndex = 1
+      TabVisible = False
+      object Stage1BackPanel: TPanel
+        Left = 30
+        Top = 40
+        Width = 457
+        Height = 249
+        TabOrder = 0
+        Visible = False
+        object Stage1Task1Label: TLabel
+          Left = 180
+          Top = 0
+          Width = 110
+          Height = 16
+          Caption = #1055#1088#1080#1075#1086#1090#1086#1074#1100#1090#1077#1089#1100'...'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Stage1ResultLabel: TLabel
+          Left = 214
+          Top = 208
+          Width = 5
+          Height = 19
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -16
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Visible = False
+        end
+        object Stage1Task2Label: TLabel
+          Left = 230
+          Top = 61
+          Width = 8
+          Height = 16
+          Caption = '3'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Visible = False
+        end
+        object Stage1GameWordLabel: TLabel
+          Left = 214
+          Top = 99
+          Width = 7
+          Height = 15
+          Font.Charset = RUSSIAN_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Consolas'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Visible = False
+        end
+        object Stage1ConfirmWord: TButton
+          Left = 332
+          Top = 131
+          Width = 105
+          Height = 57
+          Caption = #1055#1086#1076#1090#1074#1077#1088#1076#1080#1090#1100
+          Enabled = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 0
+          Visible = False
+          OnClick = Stage1ConfirmWordClick
+        end
+        object Stage1EnterWord: TEdit
+          Left = 136
+          Top = 144
+          Width = 145
+          Height = 27
+          Enabled = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clGray
+          Font.Height = -16
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 1
+          TextHint = #1042#1074#1077#1076#1080#1090#1077' '#1089#1083#1086#1074#1086
+          Visible = False
+          OnChange = Stage1EnterWordChange
+        end
+      end
+    end
+    object SecondStage: TTabSheet
+      Caption = #1042#1090#1086#1088#1086#1081' '#1101#1090#1072#1087
+      Enabled = False
+      ImageIndex = 2
+      TabVisible = False
+      object Stage2Task1Label: TLabel
+        Left = 216
+        Top = 31
+        Width = 110
+        Height = 16
+        Caption = #1055#1088#1080#1075#1086#1090#1086#1074#1100#1090#1077#1089#1100'...'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Stage2GameWordsLabel: TLabel
+        Left = 62
+        Top = 63
+        Width = 4
+        Height = 16
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Visible = False
+      end
+      object Stage2ResultLabel: TLabel
+        Left = 288
+        Top = 224
+        Width = 5
+        Height = 19
+        Visible = False
+      end
+      object Stage2MemoForWords: TMemo
+        Left = 62
+        Top = 95
+        Width = 185
+        Height = 185
+        Hint = #1042#1074#1077#1076#1080#1090#1077' '#1089#1083#1086#1074#1072'...'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 0
+        OnChange = Stage2MemoForWordsChange
+      end
+      object Stage2ConfirmWordsButton: TButton
+        Left = 288
+        Top = 160
+        Width = 169
+        Height = 41
+        Caption = #1055#1086#1076#1090#1074#1077#1088#1076#1080#1090#1100' '#1089#1087#1080#1089#1086#1082' '#1089#1083#1086#1074
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 1
+        OnClick = Stage2ConfirmWordsButtonClick
+      end
+    end
+    object ThirdStage: TTabSheet
+      Caption = #1058#1088#1077#1090#1080#1081' '#1101#1090#1072#1087
+      ImageIndex = 3
+      TabVisible = False
+    end
+    object FourthStage: TTabSheet
+      Caption = #1063#1077#1090#1074#1077#1088#1090#1099#1081' '#1101#1090#1072#1087
+      ImageIndex = 4
+      TabVisible = False
+    end
+    object FifthStage: TTabSheet
+>>>>>>> Stashed changes
       Caption = #1055#1103#1090#1099#1081' '#1101#1090#1072#1087
       ImageIndex = 5
       TabVisible = False
@@ -364,8 +556,13 @@ object Form2: TForm2
   end
   object MainMenu: TMainMenu
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     Left = 424
     Top = 8
+=======
+    Left = 160
+    Top = 16
+>>>>>>> Stashed changes
 =======
     Left = 160
     Top = 16
@@ -385,6 +582,7 @@ object Form2: TForm2
     end
   end
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   object Phase1TimerGame: TTimer
     Enabled = False
     OnTimer = Phase1TimerGameTimer
@@ -396,6 +594,8 @@ object Form2: TForm2
     Left = 372
     Top = 6
 =======
+=======
+>>>>>>> Stashed changes
   object Stage1GameTimer: TTimer
     Enabled = False
     OnTimer = Stage1GameTimerTimer
@@ -412,6 +612,9 @@ object Form2: TForm2
     OnTimer = Stage2GameTimerTimer
     Left = 272
     Top = 16
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   end
 end

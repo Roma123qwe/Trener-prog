@@ -7,7 +7,10 @@
 ВОЙНА
 ВОЯКО
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 ВЬЮГА
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 ВЕТВЬ
@@ -16,9 +19,13 @@
 ГОРОХ
 ДАВКА
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 ДРОГА
 ЕВРЕИ
 ЕХАТЬ
+=======
+ЕВРЕИ
+>>>>>>> Stashed changes
 =======
 ЕВРЕИ
 >>>>>>> Stashed changes
@@ -28,7 +35,10 @@
 ЗАБОР
 ИДИОТ
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 КЛЮКВА
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 ЛАВАШ
@@ -43,6 +53,7 @@
 РУИНА
 РИФМА
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 ТАБУН
 ТАНЕЦ
 ТЕИЗМ
@@ -55,6 +66,11 @@
 ТОЛКИ
 УЗКИЙ
 >>>>>>> Stashed changes
+=======
+ТЕИЗМ
+ТОЛКИ
+УЗКИЙ
+>>>>>>> Stashed changes
 ФАЗАН
 ХИМИЯ
 ХОЛОП
@@ -62,10 +78,15 @@
 ЦЫПКА
 ЧУРКА
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 ШАВКА
 ЩЕПКА
 ЭСКИЗ
 ЮНОША
+=======
+ЩЕПКА
+ЭСКИЗ
+>>>>>>> Stashed changes
 =======
 ЩЕПКА
 ЭСКИЗ
